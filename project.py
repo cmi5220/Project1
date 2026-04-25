@@ -120,3 +120,14 @@ def play_again():
 
 
  
+def main():
+    while True:
+        play_game()
+
+        if play_again() == False:
+            print("Thanks for playing!")
+            break
+
+
+if __name__ == "__main__":
+    main()

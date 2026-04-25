@@ -75,3 +75,18 @@ def get_player_move(board, player):
 
         return row, col
 
+
+def switch_player(player):
+    """Return the other player's symbol."""
+    return "O" if player == "X" else "X"
+
+
+def show_instructions():
+    """Display a brief guide before the game starts."""
+    print("Welcome to Tic-Tac-Toe!")
+    print("Two players take turns placing X and O on the board.")
+    print("Enter your move as two numbers: row column")
+    print("Example: 1 2")
+
+
+ 

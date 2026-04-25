@@ -1,92 +1,122 @@
-BOARD_SIZE = 3
-PLAYER_NAMES = {"X": "Player X", "O": "Player O"}
-
-
 def create_board():
-    """Create and return an empty 3x3 board."""
-    return [[" " for _ in range(BOARD_SIZE)] for _ in range(BOARD_SIZE)]
+    board = []
+
+    for i in range(3):
+        row = []
+        for j in range(3):
+            row.append(" ")
+        board.append(row)
+
+    return board
 
 
 def print_board(board):
-    """Display the current state of the game board."""
-    print("\nCurrent board:")
-    print("   0   1   2")
-    for row_index, row in enumerate(board):
-        print(f"{row_index} " + " | ".join(row))
-        if row_index < BOARD_SIZE - 1:
-            print("  " + "-" * 9)
+    print()
+    print("  0 1 2")
+
+    for i in range(3):
+        print(i, end=" ")
+        for j in range(3):
+            print(board[i][j], end="")
+            if j < 2:
+                print("|", end="")
+        print()
+        if i < 2:
+            print("  -----")
     print()
 
 
 def check_winner(board, player):
-    """Return True if the given player has won."""
-    for row in board:
-        if all(cell == player for cell in row):
+    for i in range(3):
+        if board[i][0] == player and board[i][1] == player and board[i][2] == player:
             return True
 
-    for col in range(BOARD_SIZE):
-        if all(board[row][col] == player for row in range(BOARD_SIZE)):
+    for j in range(3):
+        if board[0][j] == player and board[1][j] == player and board[2][j] == player:
             return True
 
-    if all(board[index][index] == player for index in range(BOARD_SIZE)):
+    if board[0][0] == player and board[1][1] == player and board[2][2] == player:
         return True
 
-    if all(board[index][BOARD_SIZE - 1 - index] == player for index in range(BOARD_SIZE)):
+    if board[0][2] == player and board[1][1] == player and board[2][0] == player:
         return True
 
     return False
 
 
 def is_draw(board):
-    """Return True if the board is full and there is no winner."""
-    return all(cell != " " for row in board for cell in row)
+    for i in range(3):
+        for j in range(3):
+            if board[i][j] == " ":
+                return False
+    return True
 
 
-def is_valid_coordinate(value):
-    """Return True if the string value represents a valid board coordinate."""
-    return value.isdigit() and 0 <= int(value) < BOARD_SIZE
+def get_valid_number(message):
+    while True:
+        value = input(message)
+
+        if value == "0" or value == "1" or value == "2":
+            return int(value)
+
+        print("Invalid input. Enter 0, 1, or 2.")
 
 
 def get_player_move(board, player):
-    """Prompt the current player until a valid move is entered."""
     while True:
-        raw_move = input(f"{PLAYER_NAMES[player]}, enter row and column (0-2 0-2): ").strip()
-
-        if not raw_move:
-            print("Input cannot be empty. Please enter two numbers.")
-            continue
-
-        parts = raw_move.replace(",", " ").split()
-        if len(parts) != 2:
-            print("Please enter exactly two values: row and column.")
-            continue
-
-        row_text, col_text = parts
-        if not (is_valid_coordinate(row_text) and is_valid_coordinate(col_text)):
-            print("Coordinates must be whole numbers from 0 to 2.")
-            continue
-
-        row = int(row_text)
-        col = int(col_text)
+        print("Player", player, "turn")
+        row = get_valid_number("Enter row (0-2): ")
+        col = get_valid_number("Enter column (0-2): ")
 
         if board[row][col] != " ":
-            print("That cell is already occupied. Choose another one.")
-            continue
-
-        return row, col
+            print("That spot is already taken. Try again.")
+        else:
+            return row, col
 
 
 def switch_player(player):
-    """Return the other player's symbol."""
-    return "O" if player == "X" else "X"
+    if player == "X":
+        return "O"
+    else:
+        return "X"
 
 
-def show_instructions():
-    """Display a brief guide before the game starts."""
+def play_game():
+    board = create_board()
+    current_player = "X"
+
     print("Welcome to Tic-Tac-Toe!")
-    print("Two players take turns placing X and O on the board.")
-    print("Enter your move as two numbers: row column")
-    print("Example: 1 2")
+    print("Players take turns entering a row and column from 0 to 2.")
+
+    while True:
+        print_board(board)
+        row, col = get_player_move(board, current_player)
+        board[row][col] = current_player
+
+        if check_winner(board, current_player):
+            print_board(board)
+            print("Player", current_player, "wins!")
+            break
+
+        if is_draw(board):
+            print_board(board)
+            print("The game is a draw.")
+            break
+
+        current_player = switch_player(current_player)
+
+
+def play_again():
+    while True:
+        answer = input("Do you want to play again? (y/n): ")
+        answer = answer.lower()
+
+        if answer == "y" or answer == "yes":
+            return True
+        if answer == "n" or answer == "no":
+            return False
+
+        print("Please enter y or n.")
 
 
  

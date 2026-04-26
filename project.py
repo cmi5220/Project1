@@ -59,17 +59,17 @@ def get_valid_number(message):
         if value == "0" or value == "1" or value == "2":
             return int(value)
 
-        print("Invalid input. Enter 0, 1, or 2.")
+        print("Invalid Enter 0, 1, or 2.")
 
 
 def get_player_move(board, player):
     while True:
         print("Player", player, "turn")
-        row = get_valid_number("Enter row (0-2): ")
-        col = get_valid_number("Enter column (0-2): ")
+        row = get_valid_number("Enter row 0-2: ")
+        col = get_valid_number("Enter column 0-2: ")
 
         if board[row][col] != " ":
-            print("That spot is already taken. Try again.")
+            print("That spot is taken, try again.")
         else:
             return row, col
 
@@ -85,7 +85,7 @@ def play_game():
     board = create_board()
     current_player = "X"
 
-    print("Welcome to Tic-Tac-Toe!")
+    print("Tic-Tac-Toe!")
     print("Players take turns entering a row and column from 0 to 2.")
 
     while True:
@@ -108,7 +108,7 @@ def play_game():
 
 def play_again():
     while True:
-        answer = input("Do you want to play again? (y/n): ")
+        answer = input("Do you want to play again?: ")
         answer = answer.lower()
 
         if answer == "y" or answer == "yes":
@@ -116,7 +116,7 @@ def play_again():
         if answer == "n" or answer == "no":
             return False
 
-        print("Please enter y or n.")
+        print("Enter y or n.")
 
 
  
@@ -125,7 +125,7 @@ def main():
         play_game()
 
         if play_again() == False:
-            print("Thanks for playing!")
+            print("Thank you for playing")
             break
 
 
